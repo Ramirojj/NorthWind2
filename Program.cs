@@ -23,6 +23,7 @@ do
 Console.WriteLine("8) Display all records in the Products table");
 Console.WriteLine("9) Display a specific Product (all product fields should be displayed)");
 Console.WriteLine("10) Use NLog to track user functions");
+Console.WriteLine("11)Add new records to the Categories table ");
   Console.WriteLine("Enter to quit");
   ;
   string? choice = Console.ReadLine();
@@ -259,6 +260,27 @@ else if (choice == "9")
 }
 /// 
 
+
+else if (choice == "11")
+{
+    Console.WriteLine(" Category Name:");
+    string categoryName = Console.ReadLine()!;
+    Console.WriteLine("Category Description:");
+    string? description = Console.ReadLine();
+
+    using (var db = new DataContext())
+    {
+        var category = new Category
+        {
+            CategoryName = categoryName,
+            Description = description
+        };
+
+        db.Categories.Add(category);
+        db.SaveChanges();
+    }
+    Console.WriteLine("Category added ");
+    logger.Info($"New category added: {categoryName}");
 }
 ///
 /// 
@@ -275,3 +297,8 @@ else if (choice == "9")
   Console.WriteLine();
 } while (true);
 logger.Info("Program ended");
+
+
+
+
+
