@@ -17,7 +17,13 @@ do
   Console.WriteLine("2) Add category");
   Console.WriteLine("3) Display Category and related products");
   Console.WriteLine("4) Display all Categories and their related products");
+  Console.WriteLine("6) Add product");
+  Console.WriteLine("7) Active (not discontinued) products");
+Console.WriteLine("8) Edit a specified record from the Products table");
+Console.WriteLine("8) Display a specific Product (all product fields should be displayed)");
+Console.WriteLine("8) Use NLog to track user functions");
   Console.WriteLine("Enter to quit");
+  ;
   string? choice = Console.ReadLine();
   Console.Clear();
   logger.Info("Option {choice} selected", choice);
@@ -122,6 +128,25 @@ foreach (Product p in category.Products)
       }
     }
   }
+////
+
+///
+
+
+
+/////
+
+
+
+/////
+///
+/// 
+
+
+
+
+/// 
+/////
   else if (String.IsNullOrEmpty(choice))
   {
     break;
