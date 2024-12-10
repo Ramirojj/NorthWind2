@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using NorthwindConsole.Model;
+using System.ComponentModel.DataAnnotations;
 string path = Directory.GetCurrentDirectory() + "//nlog.config";
 // create instance of Logger
 var logger = LogManager.Setup().LoadConfigurationFromFile(path).GetCurrentClassLogger();
@@ -42,7 +43,45 @@ do
   }
   else if (choice == "2")
   {
-    // Add category
+    
+
+Category category = new();
+    Console.WriteLine("Enter Category Name:");
+    category.CategoryName = Console.ReadLine()!;
+    Console.WriteLine("Enter the Category Description:");
+    category.Description = Console.ReadLine();
+    // TODO: save category to db
+    ValidationContext context = new ValidationContext(category, null, null);
+    List<ValidationResult> results = new List<ValidationResult>();
+    var isValid = Validator.TryValidateObject(category, context, results, true);
+    if (isValid)
+    {
+      var db = new DataContext();
+      // check for unique name
+      if (db.Categories.Any(c => c.CategoryName == category.CategoryName))
+      {
+        // generate validation error
+        isValid = false;
+        results.Add(new ValidationResult("Name exists", ["CategoryName"]));
+      }
+      else
+      {
+        logger.Info("Validation passed");
+        // TODO: save category to db
+      }
+    }
+    if (!isValid)
+    {
+      foreach (var result in results)
+      {
+        logger.Error($"{result.MemberNames.First()} : {result.ErrorMessage}");
+      }
+    }
+
+
+
+
+
   }
   else if (String.IsNullOrEmpty(choice))
   {
