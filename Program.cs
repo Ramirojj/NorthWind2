@@ -26,6 +26,8 @@ Console.WriteLine("10) Use NLog to track user functions");
 Console.WriteLine("11)Add new records to the Categories table ");
 Console.WriteLine("12)Edit a specified record from the Categories table ");
 Console.WriteLine("13)Display all Categories in the Categories table  ");
+Console.WriteLine("14) Display all Categories and their related active ");
+Console.WriteLine("15) Display a specific Category and its related active product data ");
   Console.WriteLine("Enter to quit");
   ;
   string? choice = Console.ReadLine();
@@ -336,8 +338,49 @@ else if (choice == "13")
     logger.Info("displayed all categories.");
 }
 /// 
+else if (choice == "14")
+{ using (var db = new DataContext())
+    {
+        var categories = db.Categories.Include(c => c.Products).ToList();
+        foreach (var category in categories.OrderBy(c => c.CategoryName))
+        {
+            Console.WriteLine($"{category.CategoryName}");
+            foreach (var product in category.Products.Where(p => !p.Discontinued).OrderBy(p => p.ProductName))
+            {
+                Console.WriteLine($"  {product.ProductName}");
+            }
+        }
+    }
+    logger.Info("displayed al l categories and their active products.");}
 /// 
-/// 
+else if (choice == "15")
+{
+    Console.WriteLine("Enter the ID of the category to display:");
+    int categoryId = int.Parse(Console.ReadLine()!);
+
+    using (var db = new DataContext())
+    {
+        var category = db.Categories
+            .Include(c => c.Products)
+            .FirstOrDefault(c => c.CategoryId == categoryId);
+
+        if (category != null)
+        {
+            Console.WriteLine(category.CategoryName);
+            foreach (var product in category.Products.Where(p => !p.Discontinued))
+            {
+                Console.WriteLine($"  {product.ProductName}");
+            }
+            logger.Info($"Displayed category ID {categoryId} and its active products.");
+        }
+        else
+        {
+            Console.WriteLine(" not found.");
+            logger.Info($"Category with ID {categoryId} no found.");
+        }}
+}
+
+//
 
 
 
