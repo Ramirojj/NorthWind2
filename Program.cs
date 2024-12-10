@@ -17,11 +17,12 @@ do
   Console.WriteLine("2) Add category");
   Console.WriteLine("3) Display Category and related products");
   Console.WriteLine("4) Display all Categories and their related products");
+    Console.WriteLine("5) Delete category");
   Console.WriteLine("6) Add product");
-  Console.WriteLine("7) Active (not discontinued) products");
+  Console.WriteLine("7) Edit a specified record from the Products table");
 Console.WriteLine("8) Edit a specified record from the Products table");
-Console.WriteLine("8) Display a specific Product (all product fields should be displayed)");
-Console.WriteLine("8) Use NLog to track user functions");
+Console.WriteLine("9) Display a specific Product (all product fields should be displayed)");
+Console.WriteLine("10) Use NLog to track user functions");
   Console.WriteLine("Enter to quit");
   ;
   string? choice = Console.ReadLine();
@@ -132,13 +133,35 @@ foreach (Product p in category.Products)
 
 ///
 
-
+else if (choice == "6")
+{
+var db = new DataContext();
+    Product product = new();
+    Console.WriteLine("Enter Product Name:");
+    product.ProductName = Console.ReadLine()!;
+    Console.WriteLine("Enter Unit Price (or leave blank):");
+    product.UnitPrice = decimal.TryParse(Console.ReadLine(), out decimal unitPrice) ? unitPrice : null;
+    Console.WriteLine("Enter Units In Stock (or leave blank):");
+    product.UnitsInStock = short.TryParse(Console.ReadLine(), out short unitsInStock) ? unitsInStock : null;
+    Console.WriteLine("Is the product discontinued? (y/n):");
+    product.Discontinued = Console.ReadLine()?.ToLower() == "y";
+    if (!db.Products.Any(p => p.ProductName == product.ProductName))
+    {
+        db.Products.Add(product);
+        db.SaveChanges();
+        Console.WriteLine("Product added successfully.");}
+    else
+    {
+        Console.WriteLine("A product with this name already exists.");
+    }}
 
 /////
 
 
 
 /////
+///
+/// 
 ///
 /// 
 
