@@ -228,7 +228,38 @@ else if (choice == "8")
     }
 }
 ///
+else if (choice == "9")
+{
+    var db = new DataContext();
+
+    Console.WriteLine("Enter the ID of the product to display:");
+    if (int.TryParse(Console.ReadLine(), out int productId))
+    {
+        var product = db.Products.FirstOrDefault(p => p.ProductId == productId);
+        if (product != null)
+        {
+            Console.WriteLine("Product :");
+            Console.WriteLine($"ID: {product.ProductId}");
+            Console.WriteLine($"Name: {product.ProductName}");
+            Console.WriteLine($"Supplier ID: {product.SupplierId}");
+            Console.WriteLine($"Category ID: {product.CategoryId}");
+            Console.WriteLine($"Quantity Per Unit: {product.QuantityPerUnit}");
+            Console.WriteLine($"Unit Price: {product.UnitPrice:C}");
+            Console.WriteLine($"Units In Stock: {product.UnitsInStock}");
+            Console.WriteLine($"Units On Order: {product.UnitsOnOrder}");
+            Console.WriteLine($"Reorder Level: {product.ReorderLevel}");
+            Console.WriteLine($"Discontinued: {(product.Discontinued ? "Yes" : "No")}");
+        }
+        else
+        {
+            Console.WriteLine("Product not found.");
+        }
+    }
+   
+}
 /// 
+
+}
 ///
 /// 
 
