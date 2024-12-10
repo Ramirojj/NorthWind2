@@ -157,7 +157,37 @@ var db = new DataContext();
 
 /////
 
+else if (choice == "7")
+{
+    var db = new DataContext();
 
+    Console.WriteLine("Enter the ID of the product to edit:");
+    if (int.TryParse(Console.ReadLine(), out int productId))
+    {
+        var product = db.Products.Find(productId);
+
+        if (product != null){
+        
+            Console.WriteLine($"Editing {product.ProductName}...");
+            Console.WriteLine("New Product Name :");
+            string? newName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(newName)) product.ProductName =   newName;
+            Console.WriteLine("New Unit Price:");
+            if (decimal.TryParse(Console.ReadLine(), out decimal newPrice)) product.UnitPrice = newPrice;
+
+
+            Console.WriteLine("New Units In Stock :");
+            if (short.TryParse(Console.ReadLine(), out short newStock)) product.UnitsInStock = newStock;
+
+            Console.WriteLine("Discontinued? :");
+            string? discontinued = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(discontinued)) product.Discontinued = discontinued.ToLower() == "y";
+
+            db.SaveChanges();
+            Console.WriteLine("product updated.");
+                     }  }
+   
+}
 
 /////
 ///
