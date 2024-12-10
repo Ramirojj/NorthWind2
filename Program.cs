@@ -20,7 +20,7 @@ do
     Console.WriteLine("5) Delete category");
   Console.WriteLine("6) Add product");
   Console.WriteLine("7) Edit a specified record from the Products table");
-Console.WriteLine("8) Edit a specified record from the Products table");
+Console.WriteLine("8) Display all records in the Products table");
 Console.WriteLine("9) Display a specific Product (all product fields should be displayed)");
 Console.WriteLine("10) Use NLog to track user functions");
   Console.WriteLine("Enter to quit");
@@ -190,6 +190,43 @@ else if (choice == "7")
 }
 
 /////
+else if (choice == "8")
+{
+    var db = new DataContext();
+    Console.WriteLine("Select the type of products to display:");
+    Console.WriteLine("1) All products");
+    Console.WriteLine("2) Discontinued products");
+
+    Console.WriteLine("3) Active  products ? ");
+
+    string? productChoice = Console.ReadLine();
+    IQueryable<Product> query = db.Products;
+    if (productChoice == "1")
+    {
+        Console.WriteLine("All products:");
+    }
+    else if (productChoice == "2")
+    {
+        query = query.Where(p => p.Discontinued);
+        Console.WriteLine("Discontinued products:");
+    }
+    else if (productChoice == "3")
+    {
+        query = query.Where(p => !p.Discontinued);
+        Console.WriteLine("Active products:");
+    }
+    else
+    {
+        Console.WriteLine("Invalid choice.");
+        return;
+    }
+
+    foreach (var product in query.OrderBy(p => p.ProductName))
+    {
+        string status = product.Discontinued ? "(Discontinued)" : "(Active)";
+        Console.WriteLine($"{product.ProductName} {status}");
+    }
+}
 ///
 /// 
 ///
